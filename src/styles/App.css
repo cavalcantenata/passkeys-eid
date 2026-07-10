@@ -1,3 +1,13 @@
+/* MAN Brand Colors */
+:root {
+    --man-navy: #003366;
+    --man-red: #E40521;
+    --man-dark: #1a1a2e;
+    --man-gray: #f4f6f8;
+    --man-gray-dark: #6c757d;
+    --man-white: #ffffff;
+}
+
 footer {
     position: fixed;
     bottom: 0%;
@@ -8,83 +18,141 @@ footer {
     text-align: center;
 }
 
-.iconText {
-    margin: 0 0.5rem;
+/* Navbar */
+.man-navbar {
+    background-color: var(--man-navy) !important;
+    padding: 0.75rem 1.5rem !important;
+    box-shadow: 0 2px 8px rgba(0, 51, 102, 0.15);
 }
 
-.navbarStyle {
-    padding: 0.5rem 1rem !important;
+.man-brand {
+    color: var(--man-white) !important;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+    text-decoration: none;
 }
 
-.navbarButton {
-    color: #fff !important;
-    padding: 0.5rem 1rem !important;
+.man-brand:hover {
+    color: var(--man-gray) !important;
 }
 
-.iconText {
-    margin: 0 0.5rem;
+.man-btn {
+    background-color: var(--man-red) !important;
+    border-color: var(--man-red) !important;
+    color: var(--man-white) !important;
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 0.4rem 1.2rem;
 }
 
-.navbarStyle {
-    padding: 0.5rem 1rem;
+.man-btn:hover {
+    background-color: #c20419 !important;
+    border-color: #c20419 !important;
 }
 
-.navbarButton {
-    color: #fff !important;
+.man-btn-outline {
+    background-color: transparent !important;
+    border: 2px solid var(--man-white) !important;
+    color: var(--man-white) !important;
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 0.4rem 1.2rem;
 }
 
-.data-area-div {
+.man-btn-outline:hover {
+    background-color: var(--man-white) !important;
+    color: var(--man-navy) !important;
+}
+
+.man-btn-edit {
+    background-color: transparent !important;
+    border: 1px solid var(--man-white) !important;
+    color: var(--man-white) !important;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.8rem;
+}
+
+.man-btn-edit:hover {
+    background-color: var(--man-white) !important;
+    color: var(--man-navy) !important;
+}
+
+/* Welcome page */
+.man-welcome {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--man-navy);
+}
+
+.man-welcome h3 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.man-welcome p {
+    color: var(--man-gray-dark);
+}
+
+/* Cards */
+.man-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.man-card-header {
+    background-color: var(--man-navy);
+    color: var(--man-white);
+    font-weight: 600;
+    border-radius: 8px 8px 0 0 !important;
+    padding: 0.75rem 1.25rem;
+}
+
+.man-section-title {
+    color: var(--man-navy);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+/* Profile grid */
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.75rem;
+}
+
+.profile-field {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+    padding: 0.5rem 0;
 }
 
-.todo-form {
-    width: 60%;
+.profile-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--man-gray-dark);
+    letter-spacing: 0.5px;
 }
 
-.todo-list {
-    width: 60%;
-}
-
-.todo-label {
-    font-size: large;
-    margin-right: 22%;
-    margin-left: 3%;
-}
-
-.todo-view-btn {
-    float: right;
-}
-
-td {
+.profile-value {
+    font-size: 0.95rem;
+    color: var(--man-dark);
     word-break: break-word;
-    max-width: 34rem;
 }
 
-.warningMessage {
-    color: red;
-}
-
-.card-title {
-    text-align: center;
-}
-
-.signInButton {
-    margin: 1rem;
-}
-
+/* Security alert */
 .security-alert {
-    background-color: #e7f3ff;
-    border: 1px solid #b3d7ff;
+    background-color: #e8f0fe;
+    border: 1px solid #b3d4fc;
     border-radius: 6px;
     padding: 12px 16px;
-    color: #1a365d;
+    color: var(--man-navy);
 }
 
 .security-alert-icon {
-    color: #3182ce;
+    color: var(--man-navy);
     font-size: 16px;
 }
 
@@ -93,18 +161,25 @@ td {
     font-weight: 500;
 }
 
-/* User Profile Header Styles */
+/* User Profile Header */
 .user-profile-header {
     padding: 20px 0;
-}
-
-.security-icon {
-    flex-shrink: 0;
 }
 
 .user-email {
     font-size: 20px;
     font-weight: 600;
-    color: #333;
+    color: var(--man-navy);
     margin-bottom: 4px;
+}
+
+.navbarStyle {
+    padding: 0.5rem 1rem !important;
+}
+
+.data-area-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
 }

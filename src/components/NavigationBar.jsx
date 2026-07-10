@@ -36,27 +36,22 @@ export const NavigationBar = () => {
         }
     };
 
-    /**
-     * Most applications will need to conditionally render certain components based on whether a user is signed in or not.
-     * msal-react provides 2 easy ways to do this. AuthenticatedTemplate and UnauthenticatedTemplate components will
-     * only render their children if a user is authenticated or unauthenticated, respectively.
-     */
     return (
         <>
-            <Navbar bg="primary" variant="dark" className="navbarStyle">
-                <a className="navbar-brand" href="/">
-                    Microsoft identity platform
+            <Navbar className="navbarStyle man-navbar">
+                <a className="navbar-brand man-brand" href="/">
+                    MAN MyPortal
                 </a>
                 <AuthenticatedTemplate>
                     <div className="collapse navbar-collapse justify-content-end">
-                        <Button variant="warning" onClick={handleLogoutRedirect}>
+                        <Button className="man-btn-outline" onClick={handleLogoutRedirect}>
                             Sign out
                         </Button>
                     </div>
                 </AuthenticatedTemplate>
                 <UnauthenticatedTemplate>
                     <div className="collapse navbar-collapse justify-content-end">
-                        <Button onClick={handleLoginRedirect}>Sign in</Button>
+                        <Button className="man-btn" onClick={handleLoginRedirect}>Sign in</Button>
                     </div>
                 </UnauthenticatedTemplate>
             </Navbar>

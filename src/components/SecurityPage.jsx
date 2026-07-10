@@ -8,6 +8,7 @@ import { calculateNgcmfaExpiration, getAccessToken, getCachedAppToken } from '..
 import { UserProfileHeader, SecurityAlert } from './common/UIComponents';
 import ToastNotifications from './common/ToastNotifications';
 import PasskeysSection from './passkeys/PasskeysSection';
+import UserProfile from './UserProfile';
 
 const NGCMFA_EXPIRY_MINUTES = 15;
 const SECONDS_PER_MINUTE = 60;
@@ -190,6 +191,8 @@ export const SecurityPage = () => {
                 name={userData.name}
                 email={userData.email}
             />
+
+            <UserProfile userId={userId} appToken={appToken} />
 
             {alerts.map(alert => (
                 <SecurityAlert
