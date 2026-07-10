@@ -13,9 +13,10 @@ import { LogLevel } from '@azure/msal-browser';
 
 export const msalConfig = {
     auth: {
-        clientId: '<your-client-id-here>', // This is the ONLY mandatory field that you need to supply.
-        authority: 'https://<your-tenant-name>.ciamlogin.com/', // Replace the placeholder with your tenant subdomain 
-        redirectUri: '/',
+        clientId: '026176bf-4968-4360-9bdf-94d4c560d7a0', // This is the ONLY mandatory field that you need to supply.
+        authority: 'https://eid-int.ciam.man/7ecc32f5-cd7a-4e59-9874-271bcb842e04/', // Custom CIAM domain with tenant ID
+        knownAuthorities: ['eid-int.ciam.man'], // Skip instance discovery for custom CIAM domain
+        redirectUri: 'https://auth.eid-int.ciam.man:3000',
         postLogoutRedirectUri: '/',
         navigateToLoginRequestUrl: false,
     },
@@ -87,7 +88,7 @@ export const loginRequest = {
  */
 export const appConfig = {
     proxyDomain: 'http://localhost:3001/api',
-    appId: 'your-client-id',
-    tenantId: 'your-tenant-id',
-    customDomain: '', // Optional: your valid custom domain. If empty, the tenant subdomain from creationOptions.rp.id is used.
+    appId: '026176bf-4968-4360-9bdf-94d4c560d7a0',
+    tenantId: '7ecc32f5-cd7a-4e59-9874-271bcb842e04',
+    customDomain: 'eid-int.ciam.man', // Optional: your valid custom domain. If empty, the tenant subdomain from creationOptions.rp.id is used.
 };

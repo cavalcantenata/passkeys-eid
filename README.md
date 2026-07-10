@@ -1,4 +1,4 @@
-# Microsoft Identity Platform - React SPA with Passkeys
+§# Microsoft Identity Platform - React SPA with Passkeys
 
 This is a React Single Page Application (SPA) that demonstrates authentication with Microsoft Identity Platform and passkey management using Microsoft Graph API.
 
@@ -11,8 +11,10 @@ This is a React Single Page Application (SPA) that demonstrates authentication w
 #### App Setup
 
 - **[Node.js](https://nodejs.org/en/download)** (version 20 or higher)
-- **Windows Administrator access** (needed to edit the hosts file)
-- **[Git for Windows](https://git-scm.com/download/win)** (includes OpenSSL, used to generate a local SSL certificate)
+- **Administrator access** (needed to edit the hosts file)
+- **OpenSSL** (used to generate a local SSL certificate)
+  - **Windows**: Install [Git for Windows](https://git-scm.com/download/win) (includes OpenSSL) or download from https://slproweb.com/products/Win32OpenSSL.html
+  - **macOS**: Pre-installed, or install via `brew install openssl`
 
 #### Tenant Setup
 
@@ -28,11 +30,16 @@ This is a React Single Page Application (SPA) that demonstrates authentication w
 
 The following instructions set up this sample app **locally**. Throughout this guide, `passkeytest.ciamlogin.com` is used as the example tenant — replace it with your own.
 
-### 1. Windows Domain Setup (Required for Passkey rp.id Compliance)
+### 1. Domain Setup (Required for Passkey rp.id Compliance)
 
 **⚠️ Critical for Passkeys**: WebAuthn requires the `rp.id` (Relying Party ID) to match the domain or subdomain where passkey creation occurs. This setup ensures proper domain matching.
 
-#### Step 1: Update Windows Hosts File
+#### Step 1: Update Hosts File
+
+Locally we need to use a **subdomain** of your CIAM tenant domain. For example, for the authority `passkeytest.ciamlogin.com`, use `auth.passkeytest.ciamlogin.com` to not impact the login flow.
+
+<details>
+<summary><strong>Windows</strong></summary>
 
 1. **Open Command Prompt as Administrator**:
    - Press `Win + R`, type `cmd`
@@ -44,9 +51,7 @@ The following instructions set up this sample app **locally**. Throughout this g
    notepad C:\Windows\System32\drivers\etc\hosts
    ```
 
-3. **Add domain mapping** (replace with your actual CIAM domain, locally we need to use **subdomain** of your ciam tenant domain):
-
-For example, for the example authority `passkeytest.ciamlogin.com`, locally use the subdomain `auth.passkeytest.ciamlogin.com` in order to not impact the login flow.
+3. **Add domain mapping**:
 
    ```
    127.0.0.1    auth.passkeytest.ciamlogin.com
@@ -54,17 +59,42 @@ For example, for the example authority `passkeytest.ciamlogin.com`, locally use 
 
 4. **Save and close** the file
 
+</details>
+
+<details>
+<summary><strong>macOS</strong></summary>
+
+1. **Edit the hosts file**:
+
+   ```bash
+   sudo nano /etc/hosts
+   ```
+
+2. **Add domain mapping**:
+
+   ```
+   127.0.0.1    auth.passkeytest.ciamlogin.com
+   ```
+
+3. **Save** (`Ctrl+O`, then `Enter`) and **exit** (`Ctrl+X`)
+
+4. **Flush DNS cache**:
+
+   ```bash
+   sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
+   ```
+
+</details>
+
 #### Step 2: Generate SSL Certificate for Proper Domain
 
-1. **Install OpenSSL** (if not already installed):
-   - Download from: https://slproweb.com/products/Win32OpenSSL.html
-   - Or use Git Bash if you have Git installed
+<details>
+<summary><strong>Windows (PowerShell)</strong></summary>
 
-2. **Open PowerShell as Administrator**:
+1. **Open PowerShell as Administrator**:
    - Press `Win + X`, select "Windows PowerShell (Admin)"
-   - Or right-click Start button → "Windows PowerShell (Admin)"
 
-3. **Generate certificate for your domain**:
+2. **Generate certificate for your domain**:
 
    ```powershell
    # Navigate to the sample folder (the folder that contains package.json)
@@ -100,7 +130,40 @@ For example, for the example authority `passkeytest.ciamlogin.com`, locally use 
    Import-PfxCertificate -FilePath ".\auth-cert.pfx" -CertStoreLocation "Cert:\LocalMachine\Root" -Password $pwd
    ```
 
-5. **Confirm file names**: the generated files must be named `auth-cert.pem` and `auth-key.pem` at the project root — `vite.config.js` will detect them automatically and serve the app over HTTPS. (If you rename them, update `VITE_SSL_CERT` / `VITE_SSL_KEY` in your `.env`.)
+</details>
+
+<details>
+<summary><strong>macOS (Terminal)</strong></summary>
+
+1. **Navigate to the project folder**:
+
+   ```bash
+   cd <path-to-sample-folder>
+   ```
+
+2. **Generate the certificate and private key** (replace domain with your actual CIAM subdomain):
+
+   ```bash
+   openssl req -x509 -newkey rsa:2048 -nodes \
+     -keyout auth-key.pem \
+     -out auth-cert.pem \
+     -days 365 \
+     -subj "/CN=auth.eid-int.ciam.man" \
+     -addext "subjectAltName=DNS:auth.eid-int.ciam.man"
+   ```
+
+3. **Trust the certificate** (avoids browser security warnings):
+
+   ```bash
+   sudo security add-trusted-cert -d -r trustRoot \
+     -k /Library/Keychains/System.keychain auth-cert.pem
+   ```
+
+</details>
+
+#### Step 3: Confirm file names
+
+The generated files must be named `auth-cert.pem` and `auth-key.pem` at the project root — `vite.config.js` will detect them automatically and serve the app over HTTPS. (If you rename them, update `VITE_SSL_CERT` / `VITE_SSL_KEY` in your `.env`.)
 
 ### 2. Tenant Configuration
 
