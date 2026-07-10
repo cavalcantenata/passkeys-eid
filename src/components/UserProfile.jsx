@@ -12,7 +12,7 @@ export const UserProfile = ({ userId, appToken }) => {
     const [error, setError] = useState(null);
     const [editing, setEditing] = useState(false);
     const [saving, setSaving] = useState(false);
-    const [editForm, setEditForm] = useState({ displayName: '', mobilePhone: '' });
+    const [editForm, setEditForm] = useState({ displayName: '', givenName: '', surname: '', mobilePhone: '' });
     const [saveError, setSaveError] = useState(null);
 
     const fetchProfile = async () => {
@@ -36,6 +36,8 @@ export const UserProfile = ({ userId, appToken }) => {
     const handleEdit = () => {
         setEditForm({
             displayName: profile.displayName || '',
+            givenName: profile.givenName || '',
+            surname: profile.surname || '',
             mobilePhone: profile.mobilePhone || '',
         });
         setSaveError(null);
@@ -50,11 +52,15 @@ export const UserProfile = ({ userId, appToken }) => {
                 method: 'PATCH',
                 body: JSON.stringify({
                     displayName: editForm.displayName,
+                    givenName: editForm.givenName || null,
+                    surname: editForm.surname || null,
                     mobilePhone: editForm.mobilePhone || null,
                 }),
             }, appToken);
-            setEditing(false);
+            // Wait for Graph API propagation before closing
+            await new Promise(resolve => setTimeout(resolve, 10000));
             await fetchProfile();
+            setEditing(false);
         } catch (err) {
             setSaveError(err.message);
         } finally {
@@ -85,7 +91,7 @@ export const UserProfile = ({ userId, appToken }) => {
     const standardFields = [
         { label: 'Display Name', value: profile.displayName },
         { label: 'Email', value: profile.mail || profile.userPrincipalName },
-        { label: 'Phone Number', value: profile.mobilePhone },
+        { label: 'Phone Number', value: profile.mobilePhone || '—' },
         { label: 'Job Title', value: profile.jobTitle },
         { label: 'Department', value: profile.department },
         { label: 'Company', value: profile.companyName },
@@ -107,7 +113,7 @@ export const UserProfile = ({ userId, appToken }) => {
             <Card className="man-card mb-4">
                 <Card.Header className="man-card-header d-flex justify-content-between align-items-center">
                     <span><FaUser className="me-2" />My Profile</span>
-                    <Button size="sm" className="man-btn-edit" onClick={handleEdit}>
+                    <Button size="sm" variant="light" onClick={handleEdit}>
                         <FaEdit className="me-1" /> Edit information
                     </Button>
                 </Card.Header>
@@ -145,6 +151,22 @@ export const UserProfile = ({ userId, appToken }) => {
                 <Modal.Body>
                     {saveError && <Alert variant="danger" className="mb-3"><small>{saveError}</small></Alert>}
                     <Form>
+                        <Form.Group className="mb-3">
+                            <Form.Label className="profile-label">First Name</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={editForm.givenName}
+                                onChange={(e) => setEditForm(prev => ({ ...prev, givenName: e.target.value }))}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label className="profile-label">Last Name</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={editForm.surname}
+                                onChange={(e) => setEditForm(prev => ({ ...prev, surname: e.target.value }))}
+                            />
+                        </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label className="profile-label">Display Name</Form.Label>
                             <Form.Control
